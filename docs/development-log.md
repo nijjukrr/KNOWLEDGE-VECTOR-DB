@@ -30,3 +30,4 @@
 - Checkpoint 030: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 031: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 032: Knowledge Vector DB implementation and verification milestone.
+- Checkpoint 033: Knowledge Vector DB implementation and verification milestone.
