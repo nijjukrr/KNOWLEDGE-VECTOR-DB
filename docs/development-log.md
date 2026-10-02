@@ -57,3 +57,4 @@
 - Checkpoint 057: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 058: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 059: Knowledge Vector DB implementation and verification milestone.
+- Checkpoint 060: Knowledge Vector DB implementation and verification milestone.
