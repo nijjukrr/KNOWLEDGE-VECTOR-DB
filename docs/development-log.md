@@ -1,0 +1,1 @@
+- Checkpoint 001: Knowledge Vector DB implementation and verification milestone.
