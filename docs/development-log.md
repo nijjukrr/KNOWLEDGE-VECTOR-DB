@@ -84,3 +84,4 @@
 - Checkpoint 084: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 085: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 086: Knowledge Vector DB implementation and verification milestone.
+- Checkpoint 087: Knowledge Vector DB implementation and verification milestone.
