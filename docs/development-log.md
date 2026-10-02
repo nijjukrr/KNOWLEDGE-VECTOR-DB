@@ -34,3 +34,4 @@
 - Checkpoint 034: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 035: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 036: Knowledge Vector DB implementation and verification milestone.
+- Checkpoint 037: Knowledge Vector DB implementation and verification milestone.
