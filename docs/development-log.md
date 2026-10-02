@@ -32,3 +32,4 @@
 - Checkpoint 032: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 033: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 034: Knowledge Vector DB implementation and verification milestone.
+- Checkpoint 035: Knowledge Vector DB implementation and verification milestone.
