@@ -24,3 +24,4 @@
 - Checkpoint 024: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 025: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 026: Knowledge Vector DB implementation and verification milestone.
+- Checkpoint 027: Knowledge Vector DB implementation and verification milestone.
