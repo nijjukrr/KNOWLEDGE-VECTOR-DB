@@ -12,3 +12,4 @@
 - Checkpoint 012: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 013: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 014: Knowledge Vector DB implementation and verification milestone.
+- Checkpoint 015: Knowledge Vector DB implementation and verification milestone.
