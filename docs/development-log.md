@@ -8,3 +8,4 @@
 - Checkpoint 008: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 009: Knowledge Vector DB implementation and verification milestone.
 - Checkpoint 010: Knowledge Vector DB implementation and verification milestone.
+- Checkpoint 011: Knowledge Vector DB implementation and verification milestone.
