@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Knowledge Vector DB</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Retrieval-Augmented University Assistant</p>
+          <h1>Knowledge Vector DB</h1>
+          <p class="lede">Upload institutional documents, build a searchable repository, retrieve precise context, and answer questions with clear source references.</p>
+        </div>
+        <div class="metrics">
+          <div><strong id="document-count">0</strong><span>Documents</span></div>
+          <div><strong id="chunk-count">0</strong><span>Chunks</span></div>
+          <div><strong id="token-count">0</strong><span>Tokens</span></div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <form class="panel" id="upload-form">
+          <div class="panel-title">
+            <h2>Knowledge Repository</h2>
+            <button class="secondary small" id="rebuild-button" type="button">Rebuild</button>
+          </div>
+          <input type="file" name="document" accept=".txt,.md,.csv,.json,.pdf" required>
+          <button type="submit">Upload and Index</button>
+          <p id="upload-status" class="status"></p>
+          <ul id="document-list" class="document-list"></ul>
+        </form>
+
+        <form class="panel assistant" id="ask-form">
+          <h2>Ask with Sources</h2>
+          <textarea name="question" rows="5" placeholder="Example: What are the attendance rules?" required></textarea>
+          <button type="submit">Retrieve Answer</button>
+          <div id="answer" class="answer empty">Upload documents, then ask a university question. Answers are grounded in retrieved document chunks.</div>
+          <div id="sources" class="sources"></div>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      const documentCount = document.querySelector("#document-count");
+      const chunkCount = document.querySelector("#chunk-count");
+      const tokenCount = document.querySelector("#token-count");
+      const uploadForm = document.querySelector("#upload-form");
+      const askForm = document.querySelector("#ask-form");
+      const rebuildButton = document.querySelector("#rebuild-button");
+      const uploadStatus = document.querySelector("#upload-status");
+      const documentList = document.querySelector("#document-list");
+      const answerEl = document.querySelector("#answer");
+      const sourcesEl = document.querySelector("#sources");
+
+      async function refreshStats() {
+        const response = await fetch("/api/stats");
+        const stats = await response.json();
+        documentCount.textContent = stats.document_count;
+        chunkCount.textContent = stats.chunk_count;
+        tokenCount.textContent = stats.token_count;
+        documentList.innerHTML = stats.documents.map((name) => `
+          <li>
+            <span>${name}</span>
+            <button class="icon-button" type="button" title="Remove ${name}" data-document="${name}">Remove</button>
+          </li>
+        `).join("") || `<li class="empty-row">No documents indexed yet.</li>`;
+      }
+
+      uploadForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        uploadStatus.textContent = "Indexing document...";
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: new FormData(uploadForm),
+        });
+        const payload = await response.json();
+        uploadStatus.textContent = payload.error || payload.message;
+        uploadForm.reset();
+        await refreshStats();
+      });
+
+      rebuildButton.addEventListener("click", async () => {
+        uploadStatus.textContent = "Rebuilding repository...";
+        const response = await fetch("/api/rebuild", { method: "POST" });
+        const payload = await response.json();
+        uploadStatus.textContent = payload.message || payload.error;
+        await refreshStats();
+      });
+
+      documentList.addEventListener("click", async (event) => {
+        const button = event.target.closest("[data-document]");
+        if (!button) return;
+        uploadStatus.textContent = `Removing ${button.dataset.document}...`;
+        const response = await fetch(`/api/documents/${encodeURIComponent(button.dataset.document)}`, { method: "DELETE" });
+        const payload = await response.json();
+        uploadStatus.textContent = payload.message || payload.error;
+        await refreshStats();
+      });
+
+      askForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        answerEl.classList.remove("empty");
+        answerEl.textContent = "Retrieving relevant context...";
+        sourcesEl.innerHTML = "";
+
+        const response = await fetch("/api/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: askForm.question.value }),
+        });
+        const payload = await response.json();
+        answerEl.textContent = payload.error || payload.answer;
+        sourcesEl.innerHTML = (payload.sources || []).map((source) => `
+          <article class="source">
+            <div>
+              <strong>${source.document}</strong>
+              <span>Chunk ${source.chunk} | Score ${source.score} | ${source.confidence} confidence</span>
+            </div>
+            <p>${source.excerpt}</p>
+          </article>
+        `).join("");
+      });
+
+      refreshStats();
+    </script>
+  </body>
+</html>
