@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: knowledge-vector-db
+    runtime: python
+    plan: free
+    buildCommand: echo "No dependencies to install"
+    startCommand: python app.py
+    healthCheckPath: /api/health

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from email.parser import BytesParser
 from email.policy import default
 from http import HTTPStatus
@@ -131,8 +132,10 @@ class AssistantHandler(BaseHTTPRequestHandler):
 
 
 def main() -> None:
-    server = ThreadingHTTPServer(("127.0.0.1", 8000), AssistantHandler)
-    print("Intelligent University Knowledge Assistant running at http://127.0.0.1:8000")
+    host = os.environ.get("HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT", "8000"))
+    server = ThreadingHTTPServer((host, port), AssistantHandler)
+    print(f"Intelligent University Knowledge Assistant running at http://{host}:{port}")
     server.serve_forever()
 
 
